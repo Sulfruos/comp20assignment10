@@ -1,0 +1,68 @@
+<!doctype html>
+<html>
+<head>
+	<title>DandD</title>
+	<meta charset="utf-8"/>
+	<script>
+		function getSpells()
+		{
+			/* Step 1: Make instance of request object...
+			...to make HTTP request after page is loaded*/
+			request = new XMLHttpRequest();
+
+			console.log("1 - request object created");
+
+			// Step 2: Set the URL for the AJAX request to be the JSON file
+
+		 request.open("GET", "https://www.dnd5eapi.co/api/spells/acid-arrow");
+
+			console.log("2 - opened request file");
+
+			// Step 3: set up event handler/callback
+
+			request.onreadystatechange = function() {
+
+				if (request.readyState == 4 && request.status == 200)
+				{
+					// Step 5: wait for done + success
+					console.log("5 - response received");
+					result = request.responseText;
+					document.getElementById("data").innerHTML = result;
+					spells = JSON.parse(result);
+				/*	document.getElementById("data").innerHTML ="current temp in boston: " + weather["current"]["weather"][0]["description"];
+				*/
+				}
+				else if (request.readyState == 4 && request.status != 200)
+				{
+					document.getElementById("data").innerHTML = "Request failed! View console logs to possibly see why.";
+				}
+				else if (request.readyState == 3)
+				{
+					document.getElementById("data").innerHTML = "Request not ready - try again";
+				}
+			}
+			request.send();
+			console.log("4 - Request sent");
+		}
+	</script>
+</head>
+
+
+<body onload="getSpells()">
+
+	<h1>Dungeons and Dragons</h1>
+	<p>The API I selected was a Dungeons and Dragons 5th Edition game encyclopedia, filled with descriptive information about
+		various spells, classes, and monsters found in the fictional universe. To use the API, give a request with a subsection
+		of the game (like a spell) and then specify the name of the thing you want information of from the subsection. The example
+		they give is the spell Acid Arrow.<p>
+	<p>The website I found the API in is http://www.dnd5eapi.co/, which I also got from the public list of APIs from the AJAX
+		reading, found here: https://github.com/public-apis/public-apis.<p>
+	<p>As there was no CORS or HTTPS or key necessary for this simple API, the options I used were standard. I simply just specified
+		the name of the thing I wanted from the game and the API returns it in JSON format.</p>
+	<p>Two applications that this API could be used for:</p>
+	<p>1)Resource for Dungeons and Dragons players, both experienced and not, who need to look something up from the game.</p>
+	<p>2)Due to the creative nature of the game, people who like writing could potentially read the descriptions of things
+		from the game to get inspired</p>
+	<div id="data">Loading...</div>
+</body>
+</html>
